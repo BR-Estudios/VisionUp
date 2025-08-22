@@ -11,9 +11,10 @@ import { Entypo } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
 import { useGame } from "../contexts/gameContext.js";
 import { playEffect } from "../audios/index.js";
-import Upgrades from "../components/Upgrades/index.js";
+import Upgrades from "../components/modals/Upgrades/index.js";
 import { colors } from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import Reward from "../components/modals/Reward";
 
 export default function Home() {
   const { game, setGame } = useGame();
@@ -21,6 +22,8 @@ export default function Home() {
   const [visibleUpgrades, setVisibleUpgrades] = useState(false);
   const [visibleSettings, setVisibleSettings] = useState(false);
   const [visibleInfo, setVisibleInfo] = useState(false);
+  const [showReward, setShowReward] = useState(false);
+  const [reward, setReward] = useState(0);
 
   useEffect(() => {
     let interval;
@@ -51,8 +54,6 @@ export default function Home() {
         const minutes = Math.floor((now - last) / 60000);
 
         const reward = minutes * 1;
-
-        alert(`minutos: ${minutes} - recompensa: ${reward}`);
       }
     };
 
@@ -100,14 +101,17 @@ export default function Home() {
     setVisibleSettings(true);
   };
 
-  const close = async () => {
+  const close = async (playSound = true) => {
     Vibration.vibrate(150);
 
+    setVisibleUpgrades(false);
     setVisibleInfo(false);
     setVisibleSettings(false);
-    setVisibleUpgrades(false);
+    setShowReward(false);
 
-    await playEffect("close", require("../../assets/audios/close.wav"));
+    if (playSound) {
+      await playEffect("close", require("../../assets/audios/close.wav"));
+    }
   };
 
   return (
@@ -184,6 +188,7 @@ export default function Home() {
       </View>
 
       <Upgrades visible={visibleUpgrades} onClose={close} />
+      <Reward visible={showReward} onClose={close} reward={reward} />
     </View>
   );
 }

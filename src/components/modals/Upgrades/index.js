@@ -10,12 +10,12 @@ import {
   ToastAndroid,
   Vibration,
 } from "react-native";
-import { useUpgrades } from "../../contexts/upgradesContext";
-import { useGame } from "../../contexts/gameContext";
+import { useUpgrades } from "../../../contexts/upgradesContext";
+import { useGame } from "../../../contexts/gameContext";
 import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
-import { colors } from "../../theme";
-import { playEffect } from "../../audios";
+import { colors } from "../../../theme";
+import { playEffect } from "../../../audios";
 
 export default function Upgrade({ visible, onClose }) {
   const { upgrades, setUpgrades } = useUpgrades();
@@ -78,7 +78,7 @@ export default function Upgrade({ visible, onClose }) {
     ToastAndroid.show("Upgrade comprado!", ToastAndroid.SHORT);
     await playEffect(
       "upgrade",
-      require("../../../assets/audios/buyUpgrade.mp3")
+      require("../../../../assets/audios/buyUpgrade.mp3")
     );
   };
 
