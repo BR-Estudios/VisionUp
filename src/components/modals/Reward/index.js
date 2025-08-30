@@ -15,6 +15,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { colors } from "../../../theme";
 import { playEffect } from "../../../audios";
+import { STRINGS } from "../../../utils/strings";
 
 export default function Reward({ visible, onClose, reward }) {
   const { game, setGame } = useGame();
@@ -22,7 +23,7 @@ export default function Reward({ visible, onClose, reward }) {
   const collectReward = async () => {
     setGame({ ...game, vps: game.vps + reward });
 
-    ToastAndroid.show(`Você coletou ${reward} VPs`, ToastAndroid.SHORT);
+    ToastAndroid.show(STRINGS.alert.collectReward(reward), ToastAndroid.SHORT);
     await playEffect("collectReward", require("../../../../assets/audios/collectReward.mp3"));
 
     onClose(false);
@@ -40,9 +41,9 @@ export default function Reward({ visible, onClose, reward }) {
           <TouchableWithoutFeedback>
             <View style={styles.modal}>
               <TouchableOpacity
-                accessibilityLabel="Fechar tela"
+                accessibilityLabel={STRINGS.accessibilityLabel.closeScreen}
+                accessibilityHint={STRINGS.accessibilityHint.closeScreen}
                 accessibilityRole="button"
-                accessibilityHint="Toque para fechar a tela de recompensa."
                 activeOpacity={0.6}
                 style={styles.closeButton}
                 onPress={onClose}
@@ -50,11 +51,11 @@ export default function Reward({ visible, onClose, reward }) {
                 <Ionicons name="close" size={28} color={colors.foreground} />
               </TouchableOpacity>
 
-              <Text style={styles.title}>COLETE AGORA</Text>
+              <Text style={styles.title}>{STRINGS.interface.reward.title}</Text>
 
               <Text style={styles.message}>
-                Enquanto não jogava, Você coletou{" "}
-                <Text style={styles.reward}>{reward}</Text> VPs
+                {STRINGS.interface.reward.message}
+                <Text style={styles.reward}>{STRINGS.interface.reward.reward(reward)}</Text>
               </Text>
 
               <TouchableOpacity
@@ -62,7 +63,7 @@ export default function Reward({ visible, onClose, reward }) {
                 activeOpacity={0.6}
                 onPress={collectReward}
               >
-                <Text style={styles.textButton}>Coletar</Text>
+                <Text style={styles.textButton}>{STRINGS.interface.reward.buttonCollect}</Text>
               </TouchableOpacity>
             </View>
           </TouchableWithoutFeedback>

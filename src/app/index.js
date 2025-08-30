@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   View,
@@ -6,15 +7,18 @@ import {
   ToastAndroid,
   Vibration,
 } from "react-native";
+import { STRINGS } from "../utils/strings/index.js";
 import { styles } from "./styles.js";
 import { Entypo } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
 import { useGame } from "../contexts/gameContext.js";
 import { playEffect } from "../audios/index.js";
 import Upgrades from "../components/modals/Upgrades/index.js";
 import { colors } from "../theme";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Reward from "../components/modals/Reward";
+import Tabs from "../components/Tabs/index.js";
+import Eye from "../components/Eye/index.js";
+import Header from "../components/Header/index.js";
 
 export default function Home() {
   const { game, setGame } = useGame();
@@ -28,11 +32,11 @@ export default function Home() {
   useEffect(() => {
     let interval;
 
-    if (game.clickForSecond > 0) {
+    if (game.forSecond > 0) {
       interval = setInterval(() => {
         setGame((prev) => ({
           ...prev,
-          vps: prev.vps + prev.clickForSecond,
+          vps: prev.vps + prev.forSecond,
         }));
 
         playEffect("click", require("../../assets/audios/pop.mp3"));
@@ -42,7 +46,7 @@ export default function Home() {
         if (interval) clearInterval(interval);
       };
     }
-  }, [game.clickForSecond]);
+  }, [game.forSecond]);
 
   useEffect(() => {
     const checkReward = async () => {
@@ -116,76 +120,13 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      <StatusBar hidden />
 
-      <View style={styles.header}>
-        <View style={styles.vpsContainer}>
-          <Entypo
-            accessibilityLabel={`Você tem ${game.vps} VPs`}
-            name="eye"
-            size={40}
-            color={colors.comment}
-          />
+<Header />
+      
+      <Eye incrementVPs={incrementVPs} />
 
-          <Text importantForAccessibility="no" style={styles.vps}>
-            {game.vps}
-          </Text>
-        </View>
-
-        <Text style={styles.info}>{`+${game.vpsForClick} VPs/clique`}</Text>
-        <Text style={styles.info}>{`+${game.clickForSecond} VPs/segundo`}</Text>
-      </View>
-
-      <View style={styles.eyeContainer}>
-        <TouchableOpacity
-          accessibilityLabel="Olho"
-          accessibilityHint={`Toque para ganhar +${game.vpsForClick} VPs`}
-          accessibilityRole="button"
-          style={styles.eye}
-          activeOpacity={0.5}
-          onPress={() => incrementVPs()}
-        >
-          <Entypo name="eye" size={100} color={colors.green} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.tabs}>
-        <TouchableOpacity
-          accessibilityLabel="Loja de melhorias"
-          accessibilityRole="button"
-          accessibilityHint="Toque para abrir a loja de melhorias"
-          style={styles.tab}
-          activeOpacity={0.6}
-          onPress={openUpgrades}
-        >
-          <Entypo name="shop" size={40} color={colors.cyan} />
-          <Text style={styles.titleTab}>Loja</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          accessibilityLabel="Informações do jogo"
-          accessibilityRole="button"
-          accessibilityHint="Toque para abrir as informações do jogo"
-          style={styles.tab}
-          activeOpacity={0.6}
-          onPress={openInfo}
-        >
-          <Entypo name="info" size={40} color={colors.cyan} />
-          <Text style={styles.titleTab}>Informações</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          accessibilityLabel="Configurações"
-          accessibilityRole="button"
-          accessibilityHint="Toque para abrir as configurações"
-          style={styles.tab}
-          activeOpacity={0.6}
-          onPress={openSettings}
-        >
-          <Entypo name="cog" size={40} color={colors.cyan} />
-
-          <Text style={styles.titleTab}>Config</Text>
-        </TouchableOpacity>
-      </View>
+<Tabs openUpgrades={openUpgrades} openInfo={openInfo} openSettings={openSettings} onClose={close} />
 
       <Upgrades visible={visibleUpgrades} onClose={close} />
       <Reward visible={showReward} onClose={close} reward={reward} />
