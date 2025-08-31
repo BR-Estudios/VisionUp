@@ -4,4 +4,5 @@ export const gameData = {
   forSecond: 0,
   vpsOffline: 0,
   visionPercentage: 0,
+  showWelcome: true,
 };

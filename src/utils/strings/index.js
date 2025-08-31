@@ -7,7 +7,8 @@ export const STRINGS = {
     tabs: {
       upgrades: "Loja",
       info: "Info",
-      settings: "Config"
+      settings: "Config",
+      credits: "Créditos"
     },
     reward: {
       title: "Recompensa",
@@ -25,7 +26,7 @@ export const STRINGS = {
       forSecond: (param) => `+${param} VPs por segundo`,
       cost: (param) => `Custa: ${param} VPs`,
       level: (param1, param2) => `Nível: ${param1}/${param2}`,
-    }
+    },
   },
   accessibilityLabel: {
     vps: (param) => `Você tem ${param} VPs`,
@@ -43,6 +44,8 @@ export const STRINGS = {
     closeScreen: "Toque para voltar"
   },
   alert: {
+    collectVps: (param) => `Você recebeu ${param} VPs`,
+    unavailable: "Fiquei com preguiça e ainda não fiz essa tela!",
     collectReward: (param) => `Você coletou ${param} VPs`,
     insufficientVps: "Infelizmente você ainda não tem VPs suficiênte!",
     upgradePurchased: "Melhoria comprada com sucesso!",

@@ -40,7 +40,7 @@ export default function Tabs({ openInfo, openSettings, openUpgrades, onClose }) 
         onPress={openSettings}
       >
         <Entypo name="cog" size={40} color={colors.cyan} />
-
+q
         <Text style={styles.titleTab}>{STRINGS.interface.tabs.settings}</Text>
       </TouchableOpacity>
     </View>
